@@ -1,5 +1,5 @@
 import { X, ExternalLink } from "lucide-react";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 export interface TransactionType {
   id: string;
@@ -26,13 +26,13 @@ const TransactionDetailsModal = ({
   onClose,
   data,
 }: TransactionModalProps) => {
-  useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, []);
+  // useEffect(() => {
+  //   const prev = document.body.style.overflow;
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = prev;
+  //   };
+  // }, []);
 
   if (!isOpen || !data) return null;
 

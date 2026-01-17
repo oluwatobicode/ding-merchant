@@ -32,7 +32,6 @@ const OverviewCards = () => {
         </div>
       </div>
 
-      {/* Cards Section - Used Grid for perfect 50/50 split */}
       <div className="grid grid-cols-2 gap-6">
         {stats.map((stat, index) => (
           <div
