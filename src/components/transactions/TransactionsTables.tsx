@@ -1,78 +1,129 @@
 import { Search, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import TransactionDetailsModal, {
+  type TransactionType,
+} from "../../ui/TransactionDetailsModal";
 
-interface TransactionsTablesType {
-  id: string;
-  customerName: string;
-  merchant: string;
-  amount: number;
-  status: "Completed" | "Pending" | "Failed";
-  dateTime: string;
-}
-
-const overViewTable: TransactionsTablesType[] = [
+const overViewTable: TransactionType[] = [
   {
-    id: "sd12e123ra",
+    id: "TRX-98237102",
     customerName: "Tolu Andula",
-    merchant: "Wayne Enterprises",
+    merchant: "Shoprite Ikeja",
     amount: 12000,
     status: "Completed",
-    dateTime: "12 March, 2025 | 12:57PM",
+    dateTime: "12 March, 2025 | 12:57 PM",
+    attendedBy: "Tolu Andula",
+    issuingBank: "Access Bank",
+    cardNetwork: "Mastercard",
+    cardNumber: "**** **** 2455",
   },
   {
-    id: "sd12e123ra",
+    id: "TRX-88219033",
     customerName: "Jade Thompson",
-    merchant: "Stark Industries",
-    amount: 15500,
+    merchant: "Uber Ride",
+    amount: 4500,
     status: "Completed",
-    dateTime: "12 March, 2025 | 12:57PM",
+    dateTime: "12 March, 2025 | 11:42 AM",
+    attendedBy: "Jade Thompson",
+    issuingBank: "GTBank",
+    cardNetwork: "Visa",
+    cardNumber: "**** **** 8832",
   },
   {
-    id: "sd12e123ra",
+    id: "TRX-77209112",
     customerName: "Ravi Patel",
-    merchant: "Oscorp",
-    amount: 18200,
+    merchant: "Eko Hotels & Suites",
+    amount: 182000,
     status: "Failed",
-    dateTime: "12 March, 2025 | 12:57PM",
+    dateTime: "12 March, 2025 | 10:15 AM",
+    attendedBy: "Ravi Patel",
+    issuingBank: "Zenith Bank",
+    cardNetwork: "Mastercard",
+    cardNumber: "**** **** 1092",
   },
   {
-    id: "sd12e123ra",
+    id: "TRX-66128821",
     customerName: "Sofia Martinez",
-    merchant: "Pym Technologies",
-    amount: 22750,
+    merchant: "Netflix Subscription",
+    amount: 4500,
     status: "Completed",
-    dateTime: "12 March, 2025 | 12:57PM",
+    dateTime: "12 March, 2025 | 09:30 AM",
+    attendedBy: "Sofia Martinez",
+    issuingBank: "UBA",
+    cardNetwork: "Visa",
+    cardNumber: "**** **** 6721",
   },
   {
-    id: "sd12e123ra",
+    id: "TRX-55102938",
     customerName: "Carlos Gomez",
-    merchant: "LexCorp",
+    merchant: "Jumia Nigeria",
     amount: 30000,
     status: "Pending",
-    dateTime: "12 March, 2025 | 12:57PM",
+    dateTime: "11 March, 2025 | 04:20 PM",
+    attendedBy: "Carlos Gomez",
+    issuingBank: "First Bank",
+    cardNetwork: "Verve",
+    cardNumber: "**** **** 5543",
   },
   {
-    id: "sd12e123ra",
+    id: "TRX-44910233",
     customerName: "Lena Chen",
-    merchant: "Queen Consolidated",
-    amount: 35600,
+    merchant: "Filmhouse Cinemas",
+    amount: 8500,
     status: "Completed",
-    dateTime: "12 March, 2025 | 12:57PM",
+    dateTime: "11 March, 2025 | 02:15 PM",
+    attendedBy: "Lena Chen",
+    issuingBank: "Kuda Bank",
+    cardNetwork: "Mastercard",
+    cardNumber: "**** **** 9912",
   },
   {
-    id: "sd12e123ra",
+    id: "TRX-33829100",
     customerName: "Eli Johnson",
-    merchant: "Hammer Industries",
+    merchant: "Spar Supermarket",
     amount: 40300,
     status: "Completed",
-    dateTime: "12 March, 2025 | 12:57PM",
+    dateTime: "11 March, 2025 | 01:05 PM",
+    attendedBy: "Eli Johnson",
+    issuingBank: "Fidelity Bank",
+    cardNetwork: "Visa",
+    cardNumber: "**** **** 2201",
   },
   {
-    id: "sd12e123ra",
+    id: "TRX-22738211",
     customerName: "Maya Robinson",
-    merchant: "Wakandan Design Group",
-    amount: 50000,
+    merchant: "Chicken Republic",
+    amount: 5000,
     status: "Pending",
-    dateTime: "12 March, 2025 | 12:57PM",
+    dateTime: "11 March, 2025 | 12:45 PM",
+    attendedBy: "Maya Robinson",
+    issuingBank: "Access Bank",
+    cardNetwork: "Verve",
+    cardNumber: "**** **** 3349",
+  },
+  {
+    id: "TRX-11649322",
+    customerName: "Oluwaseun Adebayo",
+    merchant: "MTN Airtime Topup",
+    amount: 2000,
+    status: "Completed",
+    dateTime: "11 March, 2025 | 11:10 AM",
+    attendedBy: "Oluwaseun Adebayo",
+    issuingBank: "OPay",
+    cardNetwork: "Mastercard",
+    cardNumber: "**** **** 7721",
+  },
+  {
+    id: "TRX-00558433",
+    customerName: "Chinedu Okafor",
+    merchant: "DSTV Subscription",
+    amount: 14500,
+    status: "Failed",
+    dateTime: "11 March, 2025 | 09:00 AM",
+    attendedBy: "Chinedu Okafor",
+    issuingBank: "Sterling Bank",
+    cardNetwork: "Visa",
+    cardNumber: "**** **** 1188",
   },
 ];
 
@@ -98,8 +149,17 @@ const TransactionsTables = () => {
     }).format(amount);
   };
 
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<TransactionType | null>(null);
+
   return (
     <div className="w-full flex flex-col gap-4">
+      <TransactionDetailsModal
+        isOpen={!!selectedTransaction}
+        onClose={() => setSelectedTransaction(null)}
+        data={selectedTransaction}
+      />
+
       <h2 className="text-lg font-semibold text-[#111111]">All Transactions</h2>
 
       <div className="flex items-center justify-between w-full">
@@ -164,7 +224,8 @@ const TransactionsTables = () => {
               {overViewTable.map((row, index) => (
                 <tr
                   key={index}
-                  className="hover:bg-gray-50 transition-colors duration-150"
+                  className="hover:bg-gray-50 transition-colors cursor-pointer duration-150"
+                  onClick={() => setSelectedTransaction(row)}
                 >
                   <td className="py-4 px-6 text-sm text-[#1D1D1D] font-medium">
                     {row.id}
